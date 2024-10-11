@@ -137,19 +137,14 @@ def unzip_file(zip_file: str, output_dir: str):
 payload = {"grant_type": "client_credentials", "scope": "item:read"}
 
 # Make the POST request to the token endpoint
-response = requests.post(
+res = requests.post(
     f"{API_URL}/oauth/token",
     data=payload,
     auth=HTTPBasicAuth(CLIENT_ID, CLIENT_SECRET),
 )
+res.raise_for_status()
+access_token = res.json()["access_token"]
 
-# Rarse the token from the response
-if response.status_code == 200:
-    token_data = response.json()
-    access_token = token_data.get("access_token")
-else:
-    print("Failed to obtain token:", response.status_code, response.text)
-    exit(1)
 
 # List all my recent orders
 res = requests.get(
@@ -157,6 +152,7 @@ res = requests.get(
     headers={"Authorization": f"Bearer {access_token}"},
 )
 print("MY ITEMS")
+res.raise_for_status()
 pprint(res.json()[:3])
 print("\n\n")
 
@@ -169,7 +165,9 @@ res = requests.get(
     headers={"Authorization": f"Bearer {access_token}"},
 )
 print(f"ITEM {ITEM_CODE}")
+res.raise_for_status()
 pprint(res.json())
+print("\n\n")
 
 
 res = requests.get(
@@ -177,25 +175,29 @@ res = requests.get(
     headers={"Authorization": f"Bearer {access_token}"},
 )
 print(f"SAMPLES FOR {ITEM_CODE}")
-pprint(res.json()[:3])  # First 3 samples
+res.raise_for_status()
+pprint(res.json()[:3])
+print("\n\n")
 
 
 # Download the results for this item
+print(f"DOWNLOADING RESULTS FOR {ITEM_CODE} \n")
 res = requests.get(
     f"{API_URL}/api/item/{ITEM_CODE}/results",
     headers={"Authorization": f"Bearer {access_token}"},
 )
-print(f"DOWNLOADING RESULTS FOR {ITEM_CODE}")
+res.raise_for_status()
 filename = Path(DESTINATION_DIR) / f"{ITEM_CODE}_results.zip"
 download_file(res.json()["link"], filename)
 unzip_file(filename, Path(DESTINATION_DIR) / f"{ITEM_CODE}_results")
 
 # Download the reads for this item
+print(f"DOWNLOADING READS FOR {ITEM_CODE} \n")
 res = requests.get(
     f"{API_URL}/api/item/{ITEM_CODE}/reads",
     headers={"Authorization": f"Bearer {access_token}"},
 )
-print(f"DOWNLOADING READS FOR {ITEM_CODE}")
+res.raise_for_status()
 filename = Path(DESTINATION_DIR) / f"{ITEM_CODE}_reads.zip"
 download_file(res.json()["link"], filename)
 unzip_file(filename, Path(DESTINATION_DIR) / f"{ITEM_CODE}_reads")
