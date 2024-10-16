@@ -12,8 +12,16 @@ The scripts in this repo assume that these variables are exported to your enviro
 ```
 export PLASMIDSAURUS_CLIENT_ID=[your client id]
 export PLASMIDSAURUS_CLIENT_SECRET=[your client secret]
-python3 plasmidsaurus-api.py
+python3 examples/plasmidsaurus-api-intro.py
 
+python3 examples/download-results.py --item_code ABC123
+```
+
+## Autofetch Results
+If you'd like to automatically fetch results as soon as they're ready, export your client_id + client_secret to your environment, and add this to your crontab: 
+
+```
+*/10 * * * * python3 examples/auto-fetch-results.py
 ```
 
 ## Overview

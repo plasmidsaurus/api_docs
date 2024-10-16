@@ -9,7 +9,7 @@ Required packages:
     - requests
 
 Add this to your crontab: (replace `auto-fetch-results.py` with the absolute path to the script)
-*/10 * * * * python3 auto-fetch-results.py
+*/10 * * * * python3 examples/auto-fetch-results.py
 
 
 """
@@ -74,3 +74,5 @@ if __name__ == "__main__":
             download_results(item["code"], access_token, item_data_dir)
         except Exception as e:
             print(f"Error downloading results for {item['code']}: {e}")
+
+        # NOTE: Here is where you would add any additional custom logic (i.e. uploading to S3, starting a workflow, etc.)
