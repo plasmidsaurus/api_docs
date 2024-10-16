@@ -153,12 +153,23 @@ res = requests.get(
 )
 print("MY ITEMS")
 res.raise_for_status()
+if len(res.json()) == 0:
+    print("No items found")
+    exit()
+
 pprint(res.json()[:3])
 print("\n\n")
 
+# Get a specific item that has results
+ITEM_CODE = None
+for item in res.json():
+    if item["status"] == "complete" and item["product_name"] != "custom":
+        ITEM_CODE = item["code"]
+        break
 
-# Get a specific item
-ITEM_CODE = "Z9SVSX"
+if ITEM_CODE is None:
+    print("No items with results found")
+    exit()
 
 res = requests.get(
     f"{API_URL}/api/item/{ITEM_CODE}",
