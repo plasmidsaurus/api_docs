@@ -122,4 +122,13 @@ def get_items(access_token: str):
         headers={"Authorization": f"Bearer {access_token}"},
     )
     res.raise_for_status()
-    return res.json()
+    user_items = res.json()
+
+    res = requests.get(
+        f"{API_URL}/api/items?shared=true",
+        headers={"Authorization": f"Bearer {access_token}"},
+    )
+    res.raise_for_status()
+    shared_items = res.json()
+
+    return user_items + shared_items

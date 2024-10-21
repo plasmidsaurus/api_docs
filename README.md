@@ -31,6 +31,7 @@ If you'd like to automatically fetch results as soon as they're ready, export yo
 
 ```
 GET /items 
+GET /items?shared=true
 
 GET /item/<item_code>
 

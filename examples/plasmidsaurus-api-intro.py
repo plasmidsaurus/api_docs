@@ -22,6 +22,10 @@ Authorization: Bearer <token>
 ________________________________________________________________________________
 
 GET /items - returns a list of items you have access to (either your own items, or items shared with you by other users)
+ARGS:
+    shared (true/false): If true, returns only items shared with you by other users
+
+Usage: GET /items?shared=true
 
 Returns:
 [
