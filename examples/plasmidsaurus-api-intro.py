@@ -52,6 +52,40 @@ Returns:
     "quantity": 3,
     "status": "complete",
 }
+
+Attributes:
+code: The unique identifier for the item, regex: ^[A-Z0-9]{6}$
+done_date: The date the item was completed, UTC time in ISO 8601 format
+gross: The total cost of the item, in USD
+product_name: The name of the product. Possible values:
+    - plasmid_high_copy
+    - plasmid_low_copy
+    - plasmid_big
+    - plasmid_huge
+    - pcr_purified
+    - pcr_unpurified
+    - linear_big
+    - pcr_premium
+    - pcr_premium_big
+    - pcr_premium_huge
+    - zero_prep
+    - rca
+    - bacteria
+    - bacteria_big
+    - bacteria_extraction
+    - bacteria_big_extraction
+    - hybrid
+    - hybrid_big
+    - hybrid_extraction
+    - hybrid_big_extraction
+    - yeast
+    - yeast_extraction
+    - yeast_hybrid
+    - aav_single_stranded
+    - aav_self_complementary
+quantity: The number of samples in the item
+status: The status of the item, one of: submitted, pending, processing, complete
+
 ________________________________________________________________________________
 
 GET /item/<item_code>/samples - returns a list of samples for a specific item
