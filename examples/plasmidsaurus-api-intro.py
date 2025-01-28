@@ -186,7 +186,7 @@ access_token = res.json()["access_token"]
 
 # List all my recent orders
 res = requests.get(
-    f"{API_URL}/api/items",
+    f"{API_URL}/api/items?shared=true",
     headers={"Authorization": f"Bearer {access_token}"},
 )
 print("MY ITEMS")
