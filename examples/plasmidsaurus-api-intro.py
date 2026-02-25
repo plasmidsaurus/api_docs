@@ -115,14 +115,23 @@ Returns:
     "link": "<url>"
 }
 ________________________________________________________________________________
+
+GET /item/<item_code>/pod5 - returns a link to download the pod5s for a specific item
+
+Returns:
+{
+    "link": "<url>"
+}
+________________________________________________________________________________
 """
 
 import os
+import zipfile
 from pathlib import Path
+from pprint import pprint
+
 import requests
 from requests.auth import HTTPBasicAuth
-from pprint import pprint
-import zipfile
 
 ###### SETUP ######
 # Save your client id and client secret in your environment variables

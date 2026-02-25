@@ -1,12 +1,13 @@
 import sys
+import zipfile
 from pathlib import Path
+from pprint import pprint
+
 import requests
 from requests.auth import HTTPBasicAuth
-from pprint import pprint
-import zipfile
 
 ###### GLOBALS ######
-API_URL = "https://plasmidsaurus.com"
+API_URL = "https://app.plasmidsaurus.com"
 
 
 ###### HELPER FUNCTIONS ######
@@ -36,7 +37,7 @@ def download_file(url: str, output_file: str):
             downloaded += size
             done = int(progress_bar_size * downloaded / total_size)
             sys.stdout.write(
-                f"\r[{'=' * done}{' ' * (progress_bar_size-done)}] {downloaded}/{total_size} bytes"
+                f"\r[{'=' * done}{' ' * (progress_bar_size - done)}] {downloaded}/{total_size} bytes"
             )
             sys.stdout.flush()
 
@@ -111,6 +112,19 @@ def download_results(item_code: str, access_token: str, destination_dir: str):
         unzip_file(filename, Path(destination_dir) / f"{item_code}_reads")
     else:
         print(f"No reads found for {item_code}: {res.content}")
+
+    # Download the pod5s for this item
+    print(f"DOWNLOADING Pod5s FOR {item_code} \n")
+    res = requests.get(
+        f"{API_URL}/api/item/{item_code}/pod5",
+        headers={"Authorization": f"Bearer {access_token}"},
+    )
+    if res.ok:
+        filename = Path(destination_dir) / f"{item_code}_pod5.zip"
+        download_file(res.json()["link"], filename)
+        unzip_file(filename, Path(destination_dir) / f"{item_code}_pod5")
+    else:
+        print(f"No pod5s found for {item_code}: {res.content}")
 
 
 def get_items(access_token: str):
